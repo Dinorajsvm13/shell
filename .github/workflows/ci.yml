@@ -33,6 +33,8 @@ jobs:
       - name: Build Affected Projects
         run: |
           npx nx print-affected --target=build --base=HEAD~1 --select=projects > affected-projects.txt
+          # Convert comma-separated output into separate lines
+          sed -i 's/,/\n/g' affected-projects.txt
           cat affected-projects.txt
           while read -r project; do
             echo "Building affected project: $project"
