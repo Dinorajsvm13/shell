@@ -1,7 +1,7 @@
 export const environment = {
     production: false,
     apiUrl: `https://mackservices.solverminds.net`,
-    baseUrl: 'https://svm-shell-workspace.web.app/',
+    baseUrl: 'http://localhost:8080/shell/',
     remotes:[
         {
             projectName:'app1',
