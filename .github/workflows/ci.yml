@@ -1,0 +1,48 @@
+name: CI and Local Deployment
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      # Step 3: Install Dependencies
+      - name: Install Dependencies
+        run: npm install
+
+      # Step 4: Build Affected Projects
+      - name: Build Affected Projects
+        run: npx nx affected:build --base=main --head=${{ github.ref_name }}
+
+      # Step 5: Deploy to Apache Tomcat
+      - name: Deploy to Apache Tomcat
+        run: |
+          TOMCAT_DIR="/path/to/tomcat"
+          DIST_DIR="dist/app1"
+
+          # Clean old deployment
+          rm -rf $TOMCAT_DIR/webapps/app1
+
+          # Copy new build files
+          cp -r $DIST_DIR $TOMCAT_DIR/webapps/app1
+
+          # Restart Tomcat (optional)
+          $TOMCAT_DIR/bin/shutdown.sh || true
+          $TOMCAT_DIR/bin/startup.sh
