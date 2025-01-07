@@ -38,13 +38,8 @@ jobs:
           cat affected-projects.txt
           while read -r project; do
             echo "Building affected project: $project"
-            if [ "$project" = "shell" ]; then
-              echo "Building shell app with base-href /"
-              npx nx build $project --base-href=/
-            else
-              echo "Building $project with base-href /shell/$project/"
-              npx nx build $project --base-href=/shell/$project/
-            fi
+            echo "Building $project with base-href /shell/$project/"
+            npx nx build $project --base-href=/shell/$project/
           done < affected-projects.txt
 
       # Step 5: Archive Build Artifacts
