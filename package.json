@@ -3,11 +3,11 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build:shell": "nx build shell --base-href /shell/",
-    "build:app1": "nx build app1 --base-href /shell/app1/",
-    "build:app2": "nx build app2 --base-href /shell/app2/",
-    "build:app3": "nx build app3 --base-href /shell/app3/",
-    "build:app4": "nx build app4 --base-href /shell/app4/",
+    "build:shell": "nx build shell",
+    "build:app1": "nx build app1 --base-href /app1/",
+    "build:app2": "nx build app2 --base-href /app2/",
+    "build:app3": "nx build app3 --base-href /app3/",
+    "build:app4": "nx build app4 --base-href /app4/",
     "build:firebase": "npm-run-all build:shell build:app1 build:app2 build:app3 build:app4",
     "build:all": "npm-run-all build:shell build:app1 build:app2 build:app3 build:app4"
   },
