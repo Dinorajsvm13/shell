@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-22.04
 
     steps:
@@ -46,7 +46,15 @@ jobs:
 
       # Step 6: Archive Build Artifacts
       - name: Archive Build Artifacts
-        uses: actions/upload-artifact@latest
+        uses: actions/upload-artifact@v3
         with:
           name: build-artifacts
           path: dist/
+
+      # Step 7: Deploy to Firebase Hosting
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SVM_SHELL_WORKSPACE }}
+          channelId: live
