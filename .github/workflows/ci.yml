@@ -37,9 +37,13 @@ jobs:
           sed -i 's/,/\n/g' affected-projects.txt
           cat affected-projects.txt
           while read -r project; do
-            echo "Building affected project: $project"
-            echo "Building $project with base-href /shell/$project/"
-            npx nx build $project --base-href=/shell/$project/
+            if [ "$project" = "shell" ]; then
+              echo "Building shell app with base-href /shell/"
+              npx nx build $project --base-href=/shell/
+            else
+              echo "Building $project with base-href /shell/$project/"
+              npx nx build $project --base-href=/shell/$project/
+            fi
           done < affected-projects.txt
 
       # Step 5: Archive Build Artifacts
