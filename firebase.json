@@ -8,7 +8,7 @@
     ],
     "rewrites": [
       {
-        "source": "/shell/**",
+        "source": "**",
         "destination": "/index.html"
       }
     ]
