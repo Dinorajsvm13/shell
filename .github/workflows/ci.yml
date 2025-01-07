@@ -67,11 +67,7 @@ jobs:
 
       # Step 7: Authenticate Firebase CLI
       - name: Authenticate with Firebase
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-        run: |
-          echo $FIREBASE_SERVICE_ACCOUNT > firebase-key.json
-          npx firebase-tools login:ci --token "$(cat firebase-key.json)"
+        run: echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" > firebase-key.json
 
       # Step 7: Deploy Affected Projects to Firebase Hosting
       - name: Deploy Affected Projects to Firebase Hosting
