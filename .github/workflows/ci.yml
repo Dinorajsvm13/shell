@@ -10,31 +10,43 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       # Step 1: Checkout code
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js
+      # Step 2: Cache Dependencies
+      - name: Cache Node Modules
+        uses: actions/cache@v4
+        with:
+          # Cache location
+          path: ~/.npm
+          # Unique key based on the package-lock.json file
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          # Restore from a previous cache if the exact key is unavailable
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # Step 3: Set up Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 16
 
-      # Step 3: Install Dependencies
+      # Step 4: Install Dependencies
       - name: Install Dependencies
         run: npm install
 
-      # Step 4: Build All Apps with baseHref
+      # Step 5: Build All Apps with baseHref
       - name: Build All Apps
         run: |
           npm run build:all
 
-      # Step 5: Archive Build Artifacts (Optional)
+      # Step 6: Archive Build Artifacts
       - name: Archive Build Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@latest
         with:
           name: build-artifacts
           path: dist/
