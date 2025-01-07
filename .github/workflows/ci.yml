@@ -28,7 +28,7 @@ jobs:
 
       # Step 4: Determine Affected Projects and Build
       - name: Build Affected Projects
-        run: npx nx affected:build 
+        run: npx nx affected:build --base=main --head=HEAD
 
       # Step 5: Deploy to Firebase Hosting
       - name: Deploy to Firebase Hosting
