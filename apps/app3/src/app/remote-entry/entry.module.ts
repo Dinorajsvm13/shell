@@ -4,12 +4,10 @@ import { RouterModule } from '@angular/router';
 
 import { remoteRoutes } from './entry.routes';
 import { ContainerComponent } from './_container/container.component';
-import { InputComponent } from '@shell/elements';
 
 @NgModule({
-  declarations: [ContainerComponent],
-  imports: [CommonModule, RouterModule.forChild(remoteRoutes),
-    InputComponent],
+  declarations: [],
+  imports: [CommonModule, RouterModule.forChild(remoteRoutes),ContainerComponent],
   providers: [],
 })
 export class MackAngularModule {

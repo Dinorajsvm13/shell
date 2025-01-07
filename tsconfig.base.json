@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@shell/elements": ["libs/elements/src/index.ts"]
+      "@shell/elements": ["libs/elements/src/index.ts"],
+      "@shell/shared": ["libs/shared/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

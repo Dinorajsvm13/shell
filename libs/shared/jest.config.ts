@@ -1,9 +1,9 @@
 /* eslint-disable */
 export default {
-  displayName: 'elements',
+  displayName: 'shared',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../coverage/libs/elements',
+  coverageDirectory: '../../coverage/libs/shared',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',
