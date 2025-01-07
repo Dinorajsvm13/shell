@@ -65,21 +65,16 @@ jobs:
           name: build-artifacts
           path: dist/
 
+      # Step 7: Authenticate Firebase CLI
+      - name: Authenticate with Firebase
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          echo $FIREBASE_SERVICE_ACCOUNT > firebase-key.json
+          npx firebase-tools login:ci --token "$(cat firebase-key.json)"
+
       # Step 7: Deploy Affected Projects to Firebase Hosting
       - name: Deploy Affected Projects to Firebase Hosting
         run: |
           while read -r project; do
-            if [ -d "dist/apps/$project" ]; then
-              echo "Deploying $project..."
-              echo '{
-                "hosting": {
-                  "public": "dist/apps/'"$project"'",
-                  "rewrites": [{"source": "**", "destination": "/index.html"}]
-                }
-              }' > firebase.json
-              cat firebase.json  # Debug the generated firebase.json
-              npx firebase deploy --only hosting:$project
-            else
-              echo "Skipping $project as no build output found in dist/apps/$project"
-            fi
-          done < affected-projects.txt
+            if [ -
