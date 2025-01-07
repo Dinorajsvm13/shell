@@ -29,12 +29,23 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      # Step 4: Build Affected Projects
+      # Step 4: Build Affected Projects with Dynamic baseHref
       - name: Build Affected Projects
         run: |
-          npx nx affected:build --parallel --verbose --base=HEAD~1
+          npx nx print-affected --target=build --base=HEAD~1 --select=projects > affected-projects.txt
+          cat affected-projects.txt
+          while read -r project; do
+            echo "Building affected project: $project"
+            if [ "$project" = "shell" ]; then
+              echo "Building shell app with base-href /"
+              npx nx build $project --base-href=/
+            else
+              echo "Building $project with base-href /shell/$project/"
+              npx nx build $project --base-href=/shell/$project/
+            fi
+          done < affected-projects.txt
 
-      # Step 5: Archive Build Artifacts (Optional)
+      # Step 5: Archive Build Artifacts
       - name: Archive Build Artifacts
         uses: actions/upload-artifact@v3
         with:
