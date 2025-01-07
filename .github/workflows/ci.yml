@@ -33,18 +33,11 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      # Step 5: Build the App
-      - name: Build All Apps
-        run: npm run build:firebase
+      # Step 5: Build Only Affected Projects
+      - name: Build Affected Projects
+        run: npx nx affected:build --base=main~1 --head=main
 
-      # Step 6: Upload Build Artifacts
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-artifacts
-          path: dist/ # This points to your build directory
-
-      # Step 7: Deploy to Firebase Hosting
+      # Step 6: Deploy to Firebase Hosting
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
