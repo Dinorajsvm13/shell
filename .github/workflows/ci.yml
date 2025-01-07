@@ -77,4 +77,17 @@ jobs:
       - name: Deploy Affected Projects to Firebase Hosting
         run: |
           while read -r project; do
-            if [ -
+            if [ -d "dist/apps/$project" ]; then
+              echo "Deploying $project..."
+              echo '{
+                "hosting": {
+                  "public": "dist/apps/'"$project"'",
+                  "rewrites": [{"source": "**", "destination": "/index.html"}]
+                }
+              }' > firebase.json
+              cat firebase.json  # Debug the generated firebase.json
+              npx firebase deploy --only hosting:$project --token "$(cat firebase-key.json)"
+            else
+              echo "Skipping $project as no build output found in dist/apps/$project"
+            fi
+          done < affected-projects.txt
