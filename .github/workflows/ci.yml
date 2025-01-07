@@ -26,9 +26,9 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      # Step 4: Determine Affected Projects and Build
-      - name: Build Affected Projects
-        run: npx nx affected:build --base=main --head=HEAD
+      # Step 4: Build the Shell App
+      - name: Build Shell App
+        run: npx nx build shell
 
       # Step 5: Deploy to Firebase Hosting
       - name: Deploy to Firebase Hosting
