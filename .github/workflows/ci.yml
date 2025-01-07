@@ -1,10 +1,7 @@
-name: CI Build for Local Deployment
+name: CI Build and Deploy to Firebase Hosting
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
     branches:
       - main
 
@@ -21,11 +18,8 @@ jobs:
       - name: Cache Node Modules
         uses: actions/cache@v4
         with:
-          # Cache location
           path: ~/.npm
-          # Unique key based on the package-lock.json file
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          # Restore from a previous cache if the exact key is unavailable
           restore-keys: |
             ${{ runner.os }}-node-
 
@@ -39,19 +33,11 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      # Step 5: Build All Apps with baseHref
+      # Step 5: Build All Apps with Nx
       - name: Build All Apps
-        run: |
-          npm run build:all
+        run: npm run build:firebase
 
-      # Step 6: Archive Build Artifacts
-      - name: Archive Build Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-artifacts
-          path: dist/
-
-      # Step 7: Deploy to Firebase Hosting
+      # Step 6: Deploy to Firebase Hosting
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
