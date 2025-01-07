@@ -1,4 +1,4 @@
-name: CI and Local Deployment
+name: CI Build for Local Deployment
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,22 +27,14 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      # Step 4: Build Affected Projects
-      - name: Build Affected Projects
-        run: npx nx affected:build --base=main --head=${{ github.ref_name }}
-
-      # Step 5: Deploy to Apache Tomcat
-      - name: Deploy to Apache Tomcat
+      # Step 4: Build All Apps with baseHref
+      - name: Build All Apps
         run: |
-          TOMCAT_DIR="/path/to/tomcat"
-          DIST_DIR="dist/app1"
+          npm run build:all
 
-          # Clean old deployment
-          rm -rf $TOMCAT_DIR/webapps/app1
-
-          # Copy new build files
-          cp -r $DIST_DIR $TOMCAT_DIR/webapps/app1
-
-          # Restart Tomcat (optional)
-          $TOMCAT_DIR/bin/shutdown.sh || true
-          $TOMCAT_DIR/bin/startup.sh
+      # Step 5: Archive Build Artifacts (Optional)
+      - name: Archive Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: dist/
