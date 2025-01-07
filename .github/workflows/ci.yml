@@ -1,39 +1,40 @@
-name: CI Build and Deploy to Firebase Hosting
+name: CI Build for Local Deployment
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-22.04
+  build:
+    runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Set up Node.js
+      # Step 1: Checkout code
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 20
-
-      # Step 2: Checkout code
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0 # Fetch the full Git history
+          node-version: 16
 
       # Step 3: Install Dependencies
       - name: Install Dependencies
         run: npm install
 
-      # Step 4: Build the Shell App
-      - name: Build Shell App
-        run: npx nx build shell
+      # Step 4: Build All Apps with baseHref
+      - name: Build All Apps
+        run: |
+          npm run build:all
 
-      # Step 5: Deploy to Firebase Hosting
-      - name: Deploy to Firebase Hosting
-        uses: FirebaseExtended/action-hosting-deploy@v0
+      # Step 5: Archive Build Artifacts (Optional)
+      - name: Archive Build Artifacts
+        uses: actions/upload-artifact@v3
         with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SVM_SHELL_WORKSPACE }}
-          channelId: live
+          name: build-artifacts
+          path: dist/
