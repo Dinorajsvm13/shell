@@ -1,4 +1,4 @@
-name: CI Build for Local Deployment
+name: CI Build for Affected Projects
 
 on:
   push:
@@ -27,10 +27,10 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      # Step 4: Build All Apps with baseHref
-      - name: Build All Apps
+      # Step 4: Build Affected Projects
+      - name: Build Affected Projects
         run: |
-          npm run build:all
+          npx nx affected --target=build --base=main --head=main
 
       # Step 5: Archive Build Artifacts (Optional)
       - name: Archive Build Artifacts
