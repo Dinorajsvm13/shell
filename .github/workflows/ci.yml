@@ -7,10 +7,10 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
-      # Step 1: Set up Node.js (v20.x)
+      # Step 1: Set up Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -33,11 +33,18 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      # Step 5: Build All Apps
+      # Step 5: Build the App
       - name: Build All Apps
         run: npm run build:firebase
 
-      # Step 6: Deploy to Firebase Hosting
+      # Step 6: Upload Build Artifacts
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: dist/ # This points to your build directory
+
+      # Step 7: Deploy to Firebase Hosting
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
