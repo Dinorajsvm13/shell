@@ -1,4 +1,4 @@
-name: CI Build for Affected Projects
+name: CI Build and Deploy to Firebase Hosting
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,20 +23,52 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 20
 
       # Step 3: Install Dependencies
       - name: Install Dependencies
         run: npm install
 
-      # Step 4: Build Affected Projects
-      - name: Build Affected Projects
+      # Step 4: Build Affected Projects with Dynamic baseHref
+      - name: Build Affected Projects with Custom baseHref
         run: |
-          npx nx affected:build --parallel --verbose --base=HEAD~1
+          npx nx print-affected --target=build --base=HEAD~1 --select=projects > affected-projects.txt
+          while read -r project; do
+            echo "Building $project..."
+            case $project in
+              "shell")
+                npx nx build $project --base-href=/
+                ;;
+              "app1")
+                npx nx build $project --base-href=/app1/
+                ;;
+              "app2")
+                npx nx build $project --base-href=/app2/
+                ;;
+              "app3")
+                npx nx build $project --base-href=/app3/
+                ;;
+              "app4")
+                npx nx build $project --base-href=/app4/
+                ;;
+              *)
+                echo "No baseHref mapping for $project"
+                ;;
+            esac
+          done < affected-projects.txt
 
-      # Step 5: Archive Build Artifacts (Optional)
-      - name: Archive Build Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-artifacts
-          path: dist/
+      # Step 5: Deploy Affected Projects to Firebase Hosting
+      - name: Deploy Affected Projects to Firebase Hosting
+        run: |
+          while read -r project; do
+            if [ -d "dist/apps/$project" ]; then
+              echo "Deploying $project..."
+              echo '{
+                "hosting": {
+                  "public": "dist/apps/'"$project"'",
+                  "rewrites": [{"source": "**", "destination": "/index.html"}]
+                }
+              }' > firebase.json
+              npx firebase deploy --only hosting:$project
+            fi
+          done < affected-projects.txt
