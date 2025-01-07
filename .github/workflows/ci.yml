@@ -1,0 +1,40 @@
+name: CI Build for Local Deployment
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      # Step 3: Install Dependencies
+      - name: Install Dependencies
+        run: npm install
+
+      # Step 4: Build All Apps with baseHref
+      - name: Build All Apps
+        run: |
+          npm run build:all
+
+      # Step 5: Archive Build Artifacts (Optional)
+      - name: Archive Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: dist/
