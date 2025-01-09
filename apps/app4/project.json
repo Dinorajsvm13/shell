@@ -56,8 +56,8 @@
     "serve": {
       "executor": "@nx/angular:dev-server",
       "options": {
-        "port": 4304,
-        "publicHost": "http://localhost:4304"
+        "port": 4204,
+        "publicHost": "http://localhost:4204"
       },
       "configurations": {
         "production": {
@@ -90,7 +90,7 @@
       "defaultConfiguration": "production",
       "options": {
         "buildTarget": "app4:build",
-        "port": 4304,
+        "port": 4204,
         "watch": false
       },
       "configurations": {

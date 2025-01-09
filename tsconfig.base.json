@@ -7,6 +7,7 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "allowSyntheticDefaultImports":true,
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
@@ -15,7 +16,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@shell/ag-grid": ["libs/ag-grid/src/index.ts"],
       "@shell/elements": ["libs/elements/src/index.ts"],
+      "@shell/services": ["libs/services/src/index.ts"],
       "@shell/shared": ["libs/shared/src/index.ts"]
     }
   },

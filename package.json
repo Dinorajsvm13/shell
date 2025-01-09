@@ -10,19 +10,27 @@
     "build:app4": "nx build app4 --base-href /shell/app4/",
     "build:firebase": "npm-run-all build:shell build:app1 build:app2 build:app3 build:app4",
     "test":"test",
-    "build:all": "npm-run-all build:shell build:app1 build:app2 build:app3 build:app4"
+    "build:all": "npm-run-all build:shell build:app1 build:app2 build:app3 build:app4",
+    "comp": "nx generate @nx/angular:component ",
+    "lib": "nx generate @nx/angular:library  --directory libs "
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "~17.1.0",
+    "@angular/cdk": "^17.3.10",
     "@angular/common": "~17.1.0",
     "@angular/compiler": "~17.1.0",
     "@angular/core": "~17.1.0",
     "@angular/forms": "~17.1.0",
+    "@angular/material": "^17.3.10",
     "@angular/platform-browser": "~17.1.0",
     "@angular/platform-browser-dynamic": "~17.1.0",
     "@angular/router": "~17.1.0",
     "@nx/angular": "17.3.2",
+    "ag-grid-angular": "^31.1.1",
+    "ag-grid-community": "^31.1.1",
+    "ag-grid-enterprise": "^31.1.1",
+    "dayjs": "^1.11.13",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
