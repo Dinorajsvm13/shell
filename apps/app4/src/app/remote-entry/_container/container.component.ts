@@ -11,18 +11,16 @@ import { MackAgGridModule } from '@shell/ag-grid';
 })
 export class ContainerComponent {
   columnDefs = [
-    { headerName: 'ID', field: 'id', sortable: true, filter: true, resizable: true },
-    { headerName: 'Name', field: 'name', sortable: true, filter: true, resizable: true },
-    { headerName: 'Role', field: 'role', sortable: true, filter: true, resizable: true },
-    { headerName: 'Department', field: 'department', sortable: true, filter: true, resizable: true },
-    { headerName: 'Joining Date', field: 'joiningDate', sortable: true, filter: true, resizable: true }
-  ];
+    { field: 'name', headerName: 'Name' },
+    { field: 'amount', headerName: 'Amount', isSummable: true },
+    { field: 'tax', headerName: 'Tax', isSummable: true },
+    { field: 'date', headerName: 'Date' }
+  ]
 
-  dataSource = [
-    { id: 1, name: 'John Doe', role: 'Developer', department: 'IT', joiningDate: '2023-06-15' },
-    { id: 2, name: 'Jane Smith', role: 'Manager', department: 'HR', joiningDate: '2021-03-10' },
-    { id: 3, name: 'Mike Johnson', role: 'Designer', department: 'Marketing', joiningDate: '2022-11-20' },
-    { id: 4, name: 'Emily Davis', role: 'Tester', department: 'QA', joiningDate: '2024-01-05' }
+  dataSource =  [
+    { name: 'Item 1', amount: '1e3', tax: 200, date: '2025-01-09' },
+    { name: 'Item 2', amount: 300, tax: '3.5e2', date: '2025-01-08' },
+    { name: 'Item 3', amount: 400, tax: 100, date: '2025-01-07' }
   ];
 
 }

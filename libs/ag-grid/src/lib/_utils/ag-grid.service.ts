@@ -30,15 +30,13 @@ export class AgGridService {
     minWidth: 100,
     cellStyle: (params: any) => {
       const value = params.value;
-      if (!isNaN(Number(value))) {
-        return { textAlign: 'right' };
-      } else if (value instanceof Date && !isNaN(value.getTime())) {
-        return { textAlign: 'right' };
-      } else if (typeof value === 'string' && !isNaN(Number(value))) {
-        return { textAlign: 'left' };
-      } else {
-        return { textAlign: 'left' };
+      if (typeof value === 'string' || typeof value === 'number') {
+        const numericValue = parseFloat(value as any); // Handle exponential strings and numbers
+        if (!isNaN(numericValue)) {
+          return { textAlign: 'right' };
+        }
       }
+      return { textAlign: 'left' }; // Default alignment for invalid numbers or non-numeric values
     },
   };
 

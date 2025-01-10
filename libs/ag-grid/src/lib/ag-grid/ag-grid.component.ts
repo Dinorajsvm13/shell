@@ -101,7 +101,7 @@ export class AgGridComponent {
   userDetails!: any;
   selectedChip = '';
   removable = true;
-
+  pinnedBottomRowData: any[] = [];
   constructor(
     private agGridService: AgGridService,
     private storageService: StorageService
@@ -194,11 +194,31 @@ export class AgGridComponent {
       this.saveAsTemplateList,
       'save-as'
     );
+    this.calculatePinnedRow();
     this.agGridToolbar['deleteTemplate'] = this.deleteTemplate.bind(this);
     this.getAgGridTemplate();
     this.gridApi.sizeColumnsToFit();
   }
+  calculatePinnedRow(): void {
+    // Initialize an empty totals object
+    const totals: any = {};
 
+    // Iterate over columnDefs to check for summable fields
+    this.columnDefs.forEach((colDef) => {
+      if (colDef.isSummable) {
+        // Sum the values for this field
+        totals[colDef.field] = this.rowData
+          .map((row) => parseFloat(row[colDef.field]) || 0) // Convert to number (handles exponential values)
+          .reduce((acc, curr) => acc + curr, 0);
+      } else {
+        // Non-summable fields can show placeholders or remain empty
+        totals[colDef.field] = colDef.headerName === 'Name' ? 'Total' : '';
+      }
+    });
+
+    // Set the pinned bottom row
+    this.pinnedBottomRowData = [totals];
+  }
   saveAsTemplate(gridColumnApi: any, id: any, title: string) {
     this.agGridService.saveAsTemplate(
       this.gridId,
